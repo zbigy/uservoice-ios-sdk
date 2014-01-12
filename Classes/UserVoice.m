@@ -12,7 +12,6 @@
 #import "UVWelcomeViewController.h"
 #import "UVRootViewController.h"
 #import "UVSession.h"
-#import "UVNewTicketViewController.h"
 #import "UVSuggestionListViewController.h"
 #import "UVNavigationController.h"
 #import "UVUtils.h"
@@ -34,14 +33,19 @@
     [UVSession currentSession].clientConfig = clientConfig;
 }
 
-+ (void)presentUserVoiceControllers:(NSArray *)viewControllers forParentViewController:(UIViewController *)parentViewController {
++ (UINavigationController *)getNavigationControllerForUserVoiceControllers:(NSArray *)viewControllers {
     [UVBabayaga track:VIEW_CHANNEL];
     [UVSession currentSession].isModal = YES;
-    UINavigationController *navigationController = [[[UVNavigationController alloc] init] autorelease];
+    UINavigationController *navigationController = [UVNavigationController new];
     [UVUtils applyStylesheetToNavigationController:navigationController];
     navigationController.viewControllers = viewControllers;
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [parentViewController presentModalViewController:navigationController animated:YES];
+    return navigationController;
+}
+
++ (void)presentUserVoiceControllers:(NSArray *)viewControllers forParentViewController:(UIViewController *)parentViewController {
+    UINavigationController *navigationController = [self getNavigationControllerForUserVoiceControllers:viewControllers];
+    [parentViewController presentViewController:navigationController animated:YES completion:nil];
 }
 
 + (void)presentUserVoiceController:(UIViewController *)viewController forParentViewController:(UIViewController *)parentViewController {
@@ -63,23 +67,33 @@
     [self presentUserVoiceInterfaceForParentViewController:parentViewController andConfig:config];
 }
 
++ (UIViewController *)getUserVoiceInterface {
+    return [[UVRootViewController alloc] initWithViewToLoad:@"welcome"];
+}
+
 + (void)presentUserVoiceInterfaceForParentViewController:(UIViewController *)parentViewController {
-    UIViewController *viewController = [[[UVRootViewController alloc] initWithViewToLoad:@"welcome"] autorelease];
-    [self presentUserVoiceController:viewController forParentViewController:parentViewController];
+    [self presentUserVoiceController:[self getUserVoiceInterface] forParentViewController:parentViewController];
+}
+
++ (UIViewController *)getUserVoiceContactUsForm {
+    return [[UVRootViewController alloc] initWithViewToLoad:@"new_ticket"];
+}
+
++ (UIViewController *)getUserVoiceContactUsFormForModalDisplay {
+    return [self getNavigationControllerForUserVoiceControllers:@[[self getUserVoiceContactUsForm]]];
 }
 
 + (void)presentUserVoiceContactUsFormForParentViewController:(UIViewController *)parentViewController {
-    UIViewController *viewController = [[[UVRootViewController alloc] initWithViewToLoad:@"new_ticket"] autorelease];
-    [self presentUserVoiceController:viewController forParentViewController:parentViewController];
+    [self presentUserVoiceController:[self getUserVoiceContactUsForm] forParentViewController:parentViewController];
 }
 
 + (void)presentUserVoiceNewIdeaFormForParentViewController:(UIViewController *)parentViewController {
-    UIViewController *viewController = [[[UVRootViewController alloc] initWithViewToLoad:@"new_suggestion"] autorelease];
+    UIViewController *viewController = [[UVRootViewController alloc] initWithViewToLoad:@"new_suggestion"];
     [self presentUserVoiceController:viewController forParentViewController:parentViewController];
 }
 
 + (void)presentUserVoiceForumForParentViewController:(UIViewController *)parentViewController {
-    UIViewController *viewController = [[[UVRootViewController alloc] initWithViewToLoad:@"suggestions"] autorelease];
+    UIViewController *viewController = [[UVRootViewController alloc] initWithViewToLoad:@"suggestions"];
     [self presentUserVoiceController:viewController forParentViewController:parentViewController];
 }
 
@@ -125,7 +139,7 @@ static id<UVDelegate> userVoiceDelegate;
 }
 
 + (NSString *)version {
-    return @"2.0.12";
+    return @"3.0.1";
 }
 
 
