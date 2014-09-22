@@ -1,5 +1,31 @@
 ## master ##
 
+* Fix issue where comments would not appear in the comments list after being posted
+* Fix crash related to instant answer results that are displayed by rank
+* Fix a rotation-related visual artifact that some people experienced on sdk launch
+* Unescape html entities in forum names
+
+## 3.2.0 (2014-09-03) ##
+
+* iOS 8 fixes
+* Simplified behavior of search boxes when inside a form sheet
+* Updated Chinese translation
+
+## 3.1.2 (2014-08-01) ##
+
+* Updated Portuguese translation
+* Added support for displaying ideas by rank
+
+## 3.1.1 (2014-07-24) ##
+
+* Fix a bug where certain back buttons would be missing on iOS 6
+* Add an API for adding attachments to tickets (thanks to nighthawk)
+* Fix a bug where the nav bar gets lost on the iPad on iOS 7 after searching
+* Fix an issue where tapping a "Loading..." cell would load the same data multiple times
+* Fix perf issue related to truncated (expandable) labels
+* Handle inconsistent suggestion counts from API more gracefully
+* Fix background of Load More cells on iOS 6
+
 ## 3.1.0 (2014-04-29) ##
 
 * Fix a bug where the comment form submit button would be incorrectly disabled
@@ -9,7 +35,7 @@
 * Show cancel button rather than back button while user is submitting an idea or ticket
 * Add NSURLErrorNetworkConnectionLost to list of errors treated as connectivity errors
 * Add email format validation
-* Trim whitespace before enabling Next button on contact and post idea forms 
+* Trim whitespace before enabling Next button on contact and post idea forms
 * Reload ideas after user posts an idea
 * Clean up idea pagination code
 * Fix a bug related to text area wrapping
